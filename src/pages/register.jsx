@@ -87,7 +87,7 @@ export default function SignInSide() {
           item
           xs={false}
           sm={4}
-          md={7}
+          md={8}
           sx={{
             backgroundImage: `url(${BackgroundImage})`,
             backgroundRepeat: 'no-repeat',
@@ -97,7 +97,7 @@ export default function SignInSide() {
             backgroundPosition: 'right',
           }}
         />
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <Grid item xs={12} sm={8} md={4} component={Paper} elevation={6} square>
           <Box
             sx={{
               my: 8,
