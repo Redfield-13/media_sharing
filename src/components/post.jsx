@@ -9,6 +9,8 @@ import HeartBroken from '@mui/icons-material/HeartBroken';
 import axios from 'axios';
 import UserContex from './Context'
 import { useState , useEffect, useContext } from 'react';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { toast } from 'react-toastify';
 
 export default function MultiActionAreaCard(props) {
 
@@ -18,6 +20,7 @@ export default function MultiActionAreaCard(props) {
     let [unLiked,setUnLiked] = useState(false)
     const [likes, setLikes] = useState(props.likes);
     const apiUrl = 'https://backend-server-22ub.onrender.com/likes?liker='+user.id +'&currentlikes='+props.likes+'&mediaID='+props.id+'&operation='
+    const delUrl = 'https://k8fm9r7b-3456.uks1.devtunnels.ms/delete?imgID='
     const handleLike = async () => {
         if (liked) {
             setLikes(likes-1)
