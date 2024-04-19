@@ -71,9 +71,7 @@ export default function MediaCover(props) {
     >
       <Card  component="li" sx={{  boxShadow:10,  margin:'auto', marginTop:5 ,maxWidth: 345, flexGrow: 1 }}>
           <video
-            autoPlay
             loop
-            muted
             poster={props.media}
             
           >
