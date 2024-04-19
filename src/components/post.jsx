@@ -6,21 +6,20 @@ import Typography from '@mui/material/Typography';
 import { Button, CardActionArea, CardActions } from '@mui/material';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import HeartBroken from '@mui/icons-material/HeartBroken';
+import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 import UserContex from './Context'
-import { useState , useEffect, useContext } from 'react';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { toast } from 'react-toastify';
+import { useState , useEffect, useContext } from 'react';
 
 export default function MultiActionAreaCard(props) {
-
-
+  console.log(props);
     let user = useContext(UserContex);
     let [liked,setLiked] = useState(false)
     let [unLiked,setUnLiked] = useState(false)
     const [likes, setLikes] = useState(props.likes);
     const apiUrl = 'https://backend-server-22ub.onrender.com/likes?liker='+user.id +'&currentlikes='+props.likes+'&mediaID='+props.id+'&operation='
-    const delUrl = 'https://k8fm9r7b-3456.uks1.devtunnels.ms/delete?imgID='
+    const delUrl = 'https://backend-server-22ub.onrender.com/delete?imgID='
     const handleLike = async () => {
         if (liked) {
             setLikes(likes-1)
@@ -32,14 +31,11 @@ export default function MultiActionAreaCard(props) {
         }
         }else{
             try {
-                // Make an API request to update the likes count on the server
                 const response = await axios.post(apiUrl+'like', {
                   headers: {
                     'Content-Type': 'application/json'
                   }
                 });
-                
-                // If the API request is successful, update the likes count in the client
                 if (!liked) {
                   setLikes(likes + 1);
                   setLiked(true)
@@ -83,7 +79,8 @@ export default function MultiActionAreaCard(props) {
         }
         
       };
-    
+
+
       const handleDelete = async ()=>{
         
         try{
@@ -101,10 +98,11 @@ export default function MultiActionAreaCard(props) {
 
 
   return (
-    <Card sx={{ maxWidth: 345, maxHeight:345, margin:'auto', marginTop: 5, boxShadow:10}}>
+    <Card sx={{ maxWidth: 345, margin:'auto', marginTop: 5, boxShadow:10}}>
       <CardActionArea>
         <CardMedia
           component='img'
+          height="250"
           image={props.image}
           alt="green iguana"
         />
@@ -120,6 +118,7 @@ export default function MultiActionAreaCard(props) {
           <Typography sx={{marginLeft:1, marginRight:1}}>{likes}</Typography>
           <HeartBroken onClick={handleunLike}></HeartBroken>
         </Button>
+        
       </CardActions>
       {props.uploadpage == true && (
               <Button sx={{marginLeft:17.2}} size="small" color="error">
