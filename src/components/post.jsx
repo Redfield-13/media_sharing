@@ -80,14 +80,28 @@ export default function MultiActionAreaCard(props) {
         }
         
       };
+    
+      const handleDelete = async ()=>{
+        
+        try{
+          const response = await axios.post(delUrl+props.id,{
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+          console.log(response);
+          toast.info('Media Was Deleted Successfully. Refresh The Page')
+        }catch(error){
+          console.log(error);
+        }
+      }
 
 
   return (
-    <Card sx={{ maxWidth: 345, margin:'auto', marginTop: 5, boxShadow:10}}>
+    <Card sx={{ maxWidth: 345, maxHeight:345, margin:'auto', marginTop: 5, boxShadow:10}}>
       <CardActionArea>
         <CardMedia
           component='img'
-          height="250"
           image={props.image}
           alt="green iguana"
         />
@@ -104,6 +118,11 @@ export default function MultiActionAreaCard(props) {
           <HeartBroken onClick={handleunLike}></HeartBroken>
         </Button>
       </CardActions>
+      {props.uploadpage == true && (
+              <Button sx={{marginLeft:17.2}} size="small" color="error">
+                <DeleteIcon onClick={handleDelete}></DeleteIcon>
+              </Button>
+            )}
     </Card>
   );
 }

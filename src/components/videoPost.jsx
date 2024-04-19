@@ -63,7 +63,20 @@ export default function MediaCover(props) {
       }
       
     };
-
+    const handleDelete = async ()=>{
+        
+      try{
+        const response = await axios.post(delUrl+props.id,{
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        console.log(response);
+        toast.info('Media Was Deleted Successfully. Refresh The Page')
+      }catch(error){
+        console.log(error);
+      }
+    }
   return (
     <Box
       component="ul"
@@ -93,6 +106,11 @@ export default function MediaCover(props) {
           <HeartBroken  onClick={handleunLike}></HeartBroken>
         </Button>
       </CardActions>
+      {props.uploadpage == true && (
+              <Button sx={{marginLeft:17.2}} size="small" color="error">
+                <DeleteIcon onClick={handleDelete}></DeleteIcon>
+              </Button>
+            )}
       </Card>
     </Box>
   );

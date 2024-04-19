@@ -61,13 +61,17 @@ function Upload() {
                     image={post.file_link}
                     author={post.author}
                     likes={post.likes}
+                    uploadpage={true}
+                    id={post.id}
                     />
                 ) : (
                     <MediaCover
                     key={post.id}
-                    media={post.file_link}
+                    image={post.file_link}
                     author={post.author}
                     likes={post.likes}
+                    uploadpage={true}
+                    id={post.id}
                     />
                 )
                 )
