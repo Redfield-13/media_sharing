@@ -13,7 +13,7 @@ function Home() {
     let token  = {}
     console.log("yessssssssi :"+JSON.stringify(user));
     const [posts, setPosts] = useState(null)
-    let postsUrl = 'https://backend-server-22ub.onrender.com/getImages'
+    let postsUrl = 'https://k8fm9r7b-3456.uks1.devtunnels.ms/getImages'
 
     useEffect(()=>{
         fetch(postsUrl).then(res =>{
@@ -46,7 +46,6 @@ function Home() {
         <AppBar avatar = {user.avatar}></AppBar>
         {posts && (
             posts.length > 0 ? (
-                // Check a condition for each post
                 posts.slice().reverse().map((post) =>
                 post.mediaType == "image/jpeg" ? (
                     <Post
@@ -55,6 +54,7 @@ function Home() {
                     author={post.author}
                     likes={post.likes}
                     id={post.id}
+                    authorId={post.author_id}
                     />
                 ) : (
                     <MediaCover
@@ -63,6 +63,7 @@ function Home() {
                     author={post.author}
                     likes={post.likes}
                     id={post.id}
+                    authorId={post.author_id}
                     />
                 )
                 )
