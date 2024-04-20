@@ -26,7 +26,7 @@ function Profile(props) {
     console.log("yessssssssi :"+JSON.stringify(user));
     const [posts, setPosts] = useState(null)
     console.log("upppppppp : " , user.id);
-    let postsUrl = 'https://k8fm9r7b-3456.uks1.devtunnels.ms/getImages?authorID='+params.authorId
+    let postsUrl = 'https://backend-server-22ub.onrender.com/getImages?authorID='+params.authorId
     
     useEffect(()=>{
       token = JSON.parse(localStorage.getItem("userLogged"))
