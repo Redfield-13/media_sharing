@@ -16,6 +16,7 @@
     "flash": "^1.1.0",
     "framer-motion": "^11.0.28",
     "react": "^18.2.0",
+    "react-animated-heart": "^0.0.8",
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.4.1",
     "react-loader-spinner": "^6.1.6",

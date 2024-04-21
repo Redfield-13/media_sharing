@@ -4,12 +4,11 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { Button, CardActionArea, CardActions } from '@mui/material';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import HeartBroken from '@mui/icons-material/HeartBroken';
+import Heart from "react-animated-heart";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import UserContex from './Context'
 import { Link } from 'react-router-dom';
 
@@ -17,29 +16,51 @@ import { Link } from 'react-router-dom';
 export default function MediaCover(props) {
 
   let user = useContext(UserContex);
+  const [isClick, setClick] = useState(JSON.parse(localStorage.getItem("clicked")));
+  localStorage.setItem("clicked", JSON.stringify(isClick))
   let [liked,setLiked] = useState(false)
   let [unLiked,setUnLiked] = useState(false)
   const [likes, setLikes] = useState(props.likes);
-  const apiUrl = 'https://backend-server-22ub.onrender.com/likes?liker='+user.id +'&currentlikes='+props.likes+'&mediaID='+props.id+'&operation='
+  const apiUrl = 'https://backend-server-22ub.onrender.com/likes?liker='+user.id +'&currentlikes='+likes+'&mediaID='+props.id+'&operation='
   let delUrl = 'https://backend-server-22ub.onrender.com/delete?imgID='
   const handleLike = async () => {
-      if (liked) {
-          setLikes(likes-1)
-          setLiked(false)
-      }else{
-          try {
-              const response = await axios.post(apiUrl+'like', {
-                headers: {
-                  'Content-Type': 'application/json'
-                }
-              });
-              
-              setLikes(likes + 1);
-              setLiked(true)
-            } catch (error) {
-              console.error(error);
-            }
+    console.log(JSON.parse(localStorage.getItem("clicked")));
+    if (JSON.parse(localStorage.getItem("clicked"))) {
+      setLikes(likes-1);
+        setLiked(!JSON.parse(localStorage.getItem("clicked")))
+        setClick(!JSON.parse(localStorage.getItem("clicked")))
+      try {
+        const response = await axios.post(apiUrl+'unlike', {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        
+      } catch (error) {
+        console.error(error);
       }
+    }else{
+      if (liked) {
+       
+    }else{
+         try {
+            const response = await axios.post(apiUrl+'like', {
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            });
+            setLikes(likes + 1);
+            setLiked(!JSON.parse(localStorage.getItem("clicked")))
+            setClick(!JSON.parse(localStorage.getItem("clicked")))
+            
+          } catch (error) {
+            console.error(error);
+          }
+    }
+    }
+    
+      
   };
   const handleunLike = async () => {
       if (unLiked) {
@@ -101,11 +122,10 @@ export default function MediaCover(props) {
               </Typography>
             </CardContent>
         </Link>
-        <CardActions sx={{marginLeft:15}}>
+        <CardActions sx={{marginLeft:10}}>
         <Button size="small" color="primary">
-          <FavoriteBorderIcon onClick={handleLike}></FavoriteBorderIcon>
-          <Typography sx={{marginLeft:1, marginRight:1}}>{likes}</Typography>
-          <HeartBroken  onClick={handleunLike}></HeartBroken>
+        <Heart  isClick={JSON.parse(localStorage.getItem("clicked"))} onClick={handleLike} />
+          <Typography sx={{marginRight:1, fontSize:27, marginTop:0.25, color:'#e2264d'}}>{likes}</Typography>
         </Button>
       </CardActions>
       {props.uploadpage == true && (

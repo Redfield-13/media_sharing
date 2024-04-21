@@ -4,8 +4,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { Button, CardActionArea, CardActions } from '@mui/material';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import HeartBroken from '@mui/icons-material/HeartBroken';
+import Heart from "react-animated-heart";
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 import UserContex from './Context'
@@ -14,49 +13,55 @@ import { useState , useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function MultiActionAreaCard(props) {
-  console.log(props);
     let user = useContext(UserContex);
+    const localStorgaeKey = props.id
+    const [isClick, setClick] = useState(JSON.parse(localStorage.getItem("clicked"+props.id)));
+    localStorage.setItem("clicked"+props.id, JSON.stringify(isClick))
     let [liked,setLiked] = useState(false)
     let [unLiked,setUnLiked] = useState(false)
     const [likes, setLikes] = useState(props.likes);
-    const apiUrl = 'https://backend-server-22ub.onrender.com/likes?liker='+user.id +'&currentlikes='+props.likes+'&mediaID='+props.id+'&operation='
-    const delUrl = 'https://backend-server-22ub.onrender.com/delete?imgID='
+    const apiUrl = 'https://backend-server-22ub.onrender.com/likes?liker='+user.id +'&currentlikes='+likes+'&mediaID='+props.id+'&operation='
+    let delUrl = 'https://backend-server-22ub.onrender.com/delete?imgID='
     const handleLike = async () => {
+      console.log(JSON.parse(localStorage.getItem("clicked"+props.id)));
+      if (JSON.parse(localStorage.getItem("clicked"+props.id))) {
+        setLikes(likes-1);
+          setLiked(!JSON.parse(localStorage.getItem("clicked"+props.id)))
+          setClick(!JSON.parse(localStorage.getItem("clicked"+props.id)))
+        try {
+          const response = await axios.post(apiUrl+'unlike', {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+        } catch (error) {
+          console.error(error);
+        }
+      }else{
         if (liked) {
-            setLikes(likes-1)
-            setLiked(false)
-        if (unLiked && !liked) {
-          setLikes(likes + 2)
-          setLiked(true)
-          setUnLiked(false)
-        }
-        }else{
-            try {
-                const response = await axios.post(apiUrl+'like', {
-                  headers: {
-                    'Content-Type': 'application/json'
-                  }
-                });
-                if (!liked) {
-                  setLikes(likes + 1);
-                  setLiked(true)
+      }else{
+           try {
+              const response = await axios.post(apiUrl+'like', {
+                headers: {
+                  'Content-Type': 'application/json'
                 }
-                
-              } catch (error) {
-                console.error(error);
-              }
-        }
+              });
+              setLikes(likes + 1);
+              setLiked(!JSON.parse(localStorage.getItem("clicked"+props.id)))
+              setClick(!JSON.parse(localStorage.getItem("clicked"+props.id)))
+              
+            } catch (error) {
+              console.error(error);
+            }
+      }
+      }
+      
+        
     };
-
     const handleunLike = async () => {
         if (unLiked) {
             setLikes(likes + 1)
             setUnLiked(false)
-        }
-        if (liked && !unLiked) {
-          setLikes(likes - 2)
-          setLiked(false)
-          setUnLiked(true)
         }
         else{
           try {
@@ -65,21 +70,17 @@ export default function MultiActionAreaCard(props) {
                 'Content-Type': 'application/json'
               }
             });
-            if (!unLiked) {
-              setLikes(likes - 1);
+  
+            setLikes(likes - 1);
             setUnLiked(true)
-            }
-            
           } catch (error) {
             console.error(error);
           }
         }
         
       };
-
-
+  
       const handleDelete = async ()=>{
-        
         try{
           const response = await axios.post(delUrl+props.id,{
             headers: {
@@ -111,13 +112,11 @@ export default function MultiActionAreaCard(props) {
           </CardContent>
         </Link>
       </CardActionArea>
-      <CardActions sx={{marginLeft:15}}>
+      <CardActions sx={{marginLeft:10}}>
         <Button size="small" color="primary">
-          <FavoriteBorderIcon  onClick={handleLike}></FavoriteBorderIcon>
-          <Typography sx={{marginLeft:1, marginRight:1}}>{likes}</Typography>
-          <HeartBroken onClick={handleunLike}></HeartBroken>
+          <Heart  isClick={JSON.parse(localStorage.getItem("clicked"+props.id))} onClick={handleLike} />
+          <Typography sx={{marginRight:1, fontSize:27, marginTop:0.25, color:'#e2264d'}}>{likes}</Typography>          
         </Button>
-        
       </CardActions>
       {props.uploadpage == true && (
               <Button sx={{marginLeft:17.2}} size="small" color="error">
